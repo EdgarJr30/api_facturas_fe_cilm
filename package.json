@@ -1,0 +1,26 @@
+{
+  "name": "facturasapinodejs",
+  "version": "1.0.0",
+  "main": "app.js",
+  "bin": {
+    "mi-aplicacion": "./app.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Edgar",
+  "license": "ISC",
+  "keywords": [],
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "os": "^0.1.2"
+  },
+  "pkg": {
+    "assets": [
+      "facturas_result.json"
+    ],
+    "targets": ["node16-win-x64"]
+  }
+}
