@@ -43,8 +43,17 @@ app.get('/api/facturas', (req, res) => {
     try {
         // Leer solo la primera parte del archivo para obtener la cantidad total de registros
         const json = fs.readFileSync(filePath, 'utf-8');
-        const facturas = JSON.parse(json);
+        let facturas = JSON.parse(json);
         const total = facturas.length;
+
+        // Filtrar por NCF si se recibe un parámetro de búsqueda
+        const searchQuery = req.query.search ? req.query.search.trim() : "";
+        if (searchQuery) {
+            facturas = facturas.filter(factura => {
+                const ncf = factura.ncfElectronico ?? factura.NcfElectronico ?? "";
+                return ncf.trim().includes(searchQuery);
+            });
+        }
 
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 50;
@@ -55,9 +64,9 @@ app.get('/api/facturas', (req, res) => {
 
         res.json({
             total, // Número total de registros en la "base de datos"
-            page, // Página actual
+            page,  // Página actual
             limit, // Límite de registros por página
-            data, // Registros de la página solicitada
+            data,  // Registros de la página solicitada
         });
 
     } catch (error) {
