@@ -48,10 +48,19 @@ app.get('/api/facturas', (req, res) => {
 
         // Filtrar por NCF si se recibe un parámetro de búsqueda
         const searchQuery = req.query.search ? req.query.search.trim() : "";
+        const searchRnc = req.query.rnc ? req.query.rnc.trim() : "";
+
         if (searchQuery) {
             facturas = facturas.filter(factura => {
                 const ncf = factura.ncfElectronico ?? factura.NcfElectronico ?? "";
                 return ncf.trim().includes(searchQuery);
+            });
+        }
+
+        if (searchRnc) {
+            facturas = facturas.filter(factura => {
+                const rnc = factura.rncComprador ?? factura.RncComprador ?? "";
+                return rnc.trim().includes(searchRnc);
             });
         }
 
