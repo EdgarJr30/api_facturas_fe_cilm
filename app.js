@@ -64,6 +64,8 @@ app.get('/api/facturas', (req, res) => {
             });
         }
 
+        facturas.reverse();
+
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 50;
         const startIndex = (page - 1) * limit;
