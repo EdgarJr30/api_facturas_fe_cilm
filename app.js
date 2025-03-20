@@ -3,6 +3,8 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const axios = require('axios');
+
 
 // Crear una instancia de Express
 const app = express();
@@ -85,6 +87,24 @@ app.get('/api/facturas', (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
+
+app.get('/api/consultatimbrefc', (req, res) => {
+    // Extraemos los parámetros necesarios:
+    const { rncemisor, encf, montototal, codigoseguridad } = req.query;
+    
+    // Validamos que se envíen los parámetros mínimos requeridos
+    if (!rncemisor || !encf || !montototal || !codigoseguridad) {
+      return res.status(400).json({ error: 'Faltan parámetros requeridos' });
+    }
+    
+    // Construimos la URL destino usando encodeURIComponent para cada parámetro
+    const targetUrl = `https://fc.dgii.gov.do/eCF/consultatimbrefc?rncemisor=${encodeURIComponent(rncemisor)}&encf=${encodeURIComponent(encf)}&montototal=${encodeURIComponent(montototal)}&codigoseguridad=${encodeURIComponent(codigoseguridad)}`;
+    
+    // Enviar un redirect 302 a la URL destino:
+    res.redirect(targetUrl);
+  });
+  
+  
 
 // Iniciar el servidor
 app.listen(port, () => {
