@@ -66,13 +66,16 @@ app.get('/api/facturas', (req, res) => {
             });
         }
 
-        facturas.reverse();
+        facturas.sort((a, b) => {
+            const fechaA = new Date(a.fechaEmision || a.FechaEmision);
+            const fechaB = new Date(b.fechaEmision || b.FechaEmision);
+            return fechaB - fechaA;
+        });
 
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 50;
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
-
         const data = facturas.slice(startIndex, endIndex);
 
         res.json({
@@ -103,8 +106,6 @@ app.get('/api/consultatimbrefc', (req, res) => {
     // Enviar un redirect 302 a la URL destino:
     res.redirect(targetUrl);
 });
-
-
 
 // Iniciar el servidor
 app.listen(port, () => {
