@@ -46,7 +46,7 @@ app.get('/api/facturas', (req, res) => {
         // Leer solo la primera parte del archivo para obtener la cantidad total de registros
         const json = fs.readFileSync(filePath, 'utf-8');
         let facturas = JSON.parse(json);
-        const total = facturas.length;
+
 
         // Filtrar por NCF si se recibe un parámetro de búsqueda
         const searchQuery = req.query.search ? req.query.search.trim() : "";
@@ -65,6 +65,8 @@ app.get('/api/facturas', (req, res) => {
                 return rnc.trim().includes(searchRnc);
             });
         }
+
+        const total = facturas.length;
 
         facturas.sort((a, b) => {
             const fechaA = new Date(a.fechaEmision || a.FechaEmision);
